@@ -148,13 +148,13 @@
                   <el-table-column label="轉乘業者" prop="transferOperator" width="120" sortable></el-table-column>
                   <el-table-column label="起點" prop="fromAddr"></el-table-column>
                   <el-table-column label="迄點" prop="toAddr"></el-table-column>
-                  <el-table-column fixed="right" label="操作" width="150">
+                  <!-- <el-table-column fixed="right" label="操作" width="150">
                     <template slot-scope="scope">
                       <el-link type="primary" slot="reference" @click="produceQRcode(scope.row.id)">
                         <b>產生QRCODE</b>
                       </el-link>
                     </template>
-                  </el-table-column>
+                  </el-table-column> -->
                 </el-table>
               </div>
             </div>
@@ -405,7 +405,7 @@ export default {
       tabTitle: [
         {
           value: "whiteCar",
-          name: "白牌車",
+          name: "共享車隊",
         },
         // {
         //   value: "bus",

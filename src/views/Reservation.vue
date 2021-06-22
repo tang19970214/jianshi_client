@@ -64,16 +64,16 @@
                   <!-- 是否轉乘 -->
                   <el-col :span="8">
                     <el-form-item size="medium" :label="'是否轉乘'" prop="hasTransfer">
-                      <el-select v-model="carGroupList.hasTransfer" placeholder="請選擇是否轉乘">
+                      <el-select v-model="carGroupList.hasTransfer" placeholder="請選擇是否轉乘" @change="getHasTransfer">
                         <el-option label="是" value="是"></el-option>
                         <el-option label="否" value="否"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
 
-                  <!-- 轉乘運具 -->
-                  <el-col :span="8">
-                    <el-form-item size="medium" :label="'轉乘運具'" :prop="checkTransfer() ? '': 'transferTraffic'">
+                  <!-- 轉乘運具1 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘運具1'" :prop="checkTransfer() ? '': 'transferTraffic'">
                       <el-select v-model="carGroupList.transferTraffic" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
                         <el-option label="臺鐵" value="臺鐵"></el-option>
                         <el-option label="公車客運" value="公車客運"></el-option>
@@ -86,17 +86,65 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <!-- 轉乘業者 -->
-                  <el-col :span="8">
-                    <el-form-item size="medium" :label="'轉乘業者'" :prop="checkTransfer() ? '': 'transferOperator'">
+                  <!-- 轉乘業者1 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘業者1'" :prop="checkTransfer() ? '': 'transferOperator'">
                       <el-select v-model="carGroupList.transferOperator" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
                         <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
                         <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
+                  <!-- 轉乘運具2 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘運具2'">
+                      <el-select v-model="carGroupList.transferTraffic2" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
+                        <el-option label="臺鐵" value="臺鐵"></el-option>
+                        <el-option label="公車客運" value="公車客運"></el-option>
+                        <el-option label="醫療專車" value="醫療專車"></el-option>
+                        <el-option label="計程車" value="計程車"></el-option>
+                        <el-option label="小黃公車" value="小黃公車"></el-option>
+                        <el-option label="幸福巴士" value="幸福巴士"></el-option>
+                        <el-option label="公所接駁巴士" value="公所接駁巴士"></el-option>
+                        <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <!-- 轉乘業者2 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘業者2'">
+                      <el-select v-model="carGroupList.transferOperator2" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
+                        <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
+                        <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <!-- 轉乘運具3 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘運具3'">
+                      <el-select v-model="carGroupList.transferTraffic3" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
+                        <el-option label="臺鐵" value="臺鐵"></el-option>
+                        <el-option label="公車客運" value="公車客運"></el-option>
+                        <el-option label="醫療專車" value="醫療專車"></el-option>
+                        <el-option label="計程車" value="計程車"></el-option>
+                        <el-option label="小黃公車" value="小黃公車"></el-option>
+                        <el-option label="幸福巴士" value="幸福巴士"></el-option>
+                        <el-option label="公所接駁巴士" value="公所接駁巴士"></el-option>
+                        <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <!-- 轉乘業者3 -->
+                  <el-col :span="6">
+                    <el-form-item size="medium" :label="'轉乘業者3'">
+                      <el-select v-model="carGroupList.transferOperator3" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
+                        <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
+                        <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
                   <!-- 轉乘目的 -->
-                  <el-col :span="8">
+                  <el-col :span="12">
                     <el-form-item size="medium" :label="'轉乘目的'" :prop="checkTransfer() ? '': 'transferPurpose'">
                       <el-select v-model="carGroupList.transferPurpose" placeholder="請選擇轉乘目的" :disabled="checkTransfer()">
                         <el-option label="就醫" value="就醫"></el-option>
@@ -680,6 +728,17 @@ export default {
   methods: {
     changeTab(data) {
       this.nowChoose = data.value;
+    },
+    getHasTransfer(val) {
+      if (val == "是") {
+        this.carGroupList.transferTraffic = "臺鐵";
+        this.carGroupList.transferOperator = "尖石鄉DRTS";
+        this.carGroupList.transferPurpose = "就醫";
+      } else {
+        this.carGroupList.transferTraffic = "";
+        this.carGroupList.transferOperator = "";
+        this.carGroupList.transferPurpose = "";
+      }
     },
     async reload() {
       const listQuery = {

@@ -1,14 +1,20 @@
 <template>
   <div id="carGroup">
     <el-form :rules="rules" ref="dataForm_share" :model="carGroupList" label-position="top" label-width="80px">
-      <!-- 乘客姓名 -->
+      <!-- 預約人員 -->
       <el-col :span="24">
-        <el-form-item size="medium" :label="'乘客姓名'" prop="name">
-          <el-input v-model="carGroupList.name" placeholder="請輸入乘客姓名"></el-input>
+        <el-form-item size="medium" :label="'預約人員'" prop="reserveName">
+          <el-input v-model="carGroupList.reserveName" placeholder="請輸入預約人員"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 預約人員電話 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'預約人員電話'" prop="contactPhone">
+          <el-input v-model="carGroupList.contactPhone" placeholder="請輸入預約人員電話"></el-input>
         </el-form-item>
       </el-col>
       <!-- 鄉鎮 -->
-      <el-col :span="12">
+      <el-col :span="24">
         <el-form-item size="medium" :label="'鄉鎮'" prop="town">
           <el-select v-model="carGroupList.town" placeholder="請選擇鄉鎮">
             <el-option label="尖石鄉" value="SSTW"></el-option>
@@ -16,7 +22,7 @@
         </el-form-item>
       </el-col>
       <!-- 村里 -->
-      <el-col :span="12">
+      <el-col :span="24">
         <el-form-item size="medium" :label="'村里'" prop="village">
           <el-input v-model="carGroupList.village" placeholder="請輸入村里"></el-input>
         </el-form-item>
@@ -29,6 +35,24 @@
             <el-option label="學生" value="學生"></el-option>
             <el-option label="年長者" value="年長者"></el-option>
           </el-select>
+        </el-form-item>
+      </el-col>
+      <!-- 乘客姓名 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'乘客姓名'" prop="name">
+          <el-input v-model="carGroupList.name" placeholder="請輸入乘客姓名"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 生日 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'生日'" prop="birthday">
+          <el-date-picker v-model="carGroupList.birthday" type="date" placeholder="請選擇生日" style="width: 100%" value-format="yyyy-MM-dd" :picker-options="disAfterDate"></el-date-picker>
+        </el-form-item>
+      </el-col>
+      <!-- 共乘人數 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'共乘人數'" prop="carpoolNum">
+          <el-input-number style="width: 100%" v-model="carGroupList.carpoolNum" :min="0" :max="10"></el-input-number>
         </el-form-item>
       </el-col>
 
@@ -45,83 +69,91 @@
           </el-time-select>
         </el-form-item>
       </el-col>
+      <!-- 上車地點 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'上車地點'" prop="fromAddr">
+          <el-input v-model="carGroupList.fromAddr" placeholder="請輸入上車地點"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 上車地點經度 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'上車地點經度'" prop="fromLng">
+          <el-input v-model="carGroupList.fromLng" placeholder="請輸入上車地點經度"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 上車地點緯度 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'上車地點緯度'" prop="fromLat">
+          <el-input v-model="carGroupList.fromLat" placeholder="請輸入上車地點緯度"></el-input>
+        </el-form-item>
+      </el-col>
+
+      <!-- 下車時間 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'下車時間'" prop="toTime">
+          <el-time-select v-model="carGroupList.toTime" :picker-options="{start: timeStartTime, step: '00:10', end: '20:00'}" placeholder="請選擇時間" :clearable="false" :disabled="!carGroupList.reserveDate">
+          </el-time-select>
+        </el-form-item>
+      </el-col>
+      <!-- 下車地點 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'下車地點'" prop="toAddr">
+          <el-input v-model="carGroupList.toAddr" placeholder="請輸入下車地點"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 下車地點經度 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'下車地點經度'" prop="toLng">
+          <el-input v-model="carGroupList.toLng" placeholder="請輸入下車地點經度"></el-input>
+        </el-form-item>
+      </el-col>
+      <!-- 下車地點緯度 -->
+      <el-col :span="24">
+        <el-form-item size="medium" :label="'下車地點緯度'" prop="toLat">
+          <el-input v-model="carGroupList.toLat" placeholder="請輸入下車地點緯度"></el-input>
+        </el-form-item>
+      </el-col>
+
       <!-- 是否轉乘 -->
       <el-col :span="24">
         <el-form-item size="medium" :label="'是否轉乘'" prop="hasTransfer">
-          <el-select v-model="carGroupList.hasTransfer" placeholder="請選擇是否轉乘" @change="getHasTransfer">
+          <el-select v-model="carGroupList.hasTransfer" placeholder="請選擇是否轉乘">
             <el-option label="是" value="是"></el-option>
             <el-option label="否" value="否"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
-
       <!-- 轉乘運具1 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘運具1'" :prop="checkTransfer() ? '': 'transferTraffic'">
-          <el-select v-model="carGroupList.transferTraffic" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
-            <el-option label="臺鐵" value="臺鐵"></el-option>
-            <el-option label="公車客運" value="公車客運"></el-option>
-            <el-option label="醫療專車" value="醫療專車"></el-option>
-            <el-option label="計程車" value="計程車"></el-option>
-            <el-option label="小黃公車" value="小黃公車"></el-option>
+      <el-col :span="24" v-if="carGroupList.hasTransfer == '是'">
+        <el-form-item size="medium" :label="'轉乘運具1'" prop="transferTraffic">
+          <el-select v-model="carGroupList.transferTraffic" placeholder="請選擇轉乘運具">
             <el-option label="幸福巴士" value="幸福巴士"></el-option>
-            <el-option label="公所接駁巴士" value="公所接駁巴士"></el-option>
             <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <!-- 轉乘業者1 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘業者1'" :prop="checkTransfer() ? '': 'transferOperator'">
-          <el-select v-model="carGroupList.transferOperator" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
+      <el-col :span="24" v-if="carGroupList.hasTransfer == '是'">
+        <el-form-item size="medium" :label="'轉乘業者1'" prop="transferOperator" :rules="carGroupList.transferTraffic == '幸福巴士' ? rules.transferOperator : [{required: false}]">
+          <el-select v-model="carGroupList.transferOperator" placeholder="請選擇轉乘業者">
             <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
             <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <!-- 轉乘運具2 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘運具2'">
-          <el-select v-model="carGroupList.transferTraffic2" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
-            <el-option label="臺鐵" value="臺鐵"></el-option>
-            <el-option label="公車客運" value="公車客運"></el-option>
-            <el-option label="醫療專車" value="醫療專車"></el-option>
-            <el-option label="計程車" value="計程車"></el-option>
-            <el-option label="小黃公車" value="小黃公車"></el-option>
+      <el-col :span="24" v-if="carGroupList.hasTransfer == '是'">
+        <el-form-item size="medium" :label="'轉乘運具2'" prop="transferTraffic2">
+          <el-select v-model="carGroupList.transferTraffic2" placeholder="請選擇轉乘運具">
             <el-option label="幸福巴士" value="幸福巴士"></el-option>
-            <el-option label="公所接駁巴士" value="公所接駁巴士"></el-option>
             <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
           </el-select>
         </el-form-item>
       </el-col>
       <!-- 轉乘業者2 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘業者2'">
-          <el-select v-model="carGroupList.transferOperator2" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
-            <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
-            <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <!-- 轉乘運具3 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘運具3'">
-          <el-select v-model="carGroupList.transferTraffic3" placeholder="請選擇轉乘運具" :disabled="checkTransfer()">
-            <el-option label="臺鐵" value="臺鐵"></el-option>
-            <el-option label="公車客運" value="公車客運"></el-option>
-            <el-option label="醫療專車" value="醫療專車"></el-option>
-            <el-option label="計程車" value="計程車"></el-option>
-            <el-option label="小黃公車" value="小黃公車"></el-option>
-            <el-option label="幸福巴士" value="幸福巴士"></el-option>
-            <el-option label="公所接駁巴士" value="公所接駁巴士"></el-option>
-            <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <!-- 轉乘業者3 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'轉乘業者3'">
-          <el-select v-model="carGroupList.transferOperator3" placeholder="請選擇轉乘業者" :disabled="checkTransfer()">
+      <el-col :span="24" v-if="carGroupList.hasTransfer == '是'">
+        <el-form-item size="medium" :label="'轉乘業者2'" prop="transferOperator2" :rules="carGroupList.transferTraffic2 == '幸福巴士' ? rules.transferOperator2 : [{required: false}]">
+          <el-select v-model="carGroupList.transferOperator2" placeholder="請選擇轉乘業者">
             <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
             <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
           </el-select>
@@ -130,50 +162,12 @@
       <!-- 轉乘目的 -->
       <el-col :span="24">
         <el-form-item size="medium" :label="'轉乘目的'" prop="transferPurpose">
-          <el-select v-model="carGroupList.transferPurpose" placeholder="請選擇是否轉乘" :disabled="checkTransfer()">
+          <el-select v-model="carGroupList.transferPurpose" placeholder="請選擇轉乘目的">
             <el-option label="就醫" value="就醫"></el-option>
             <el-option label="就學" value="就學"></el-option>
             <el-option label="就養" value="就養"></el-option>
             <el-option label="日常" value="日常"></el-option>
           </el-select>
-        </el-form-item>
-      </el-col>
-
-      <!-- 上車地點 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'上車地點'" prop="fromAddr">
-          <el-input v-model="carGroupList.fromAddr" placeholder="請輸入上車地點" @change="getFromGeo"></el-input>
-        </el-form-item>
-      </el-col>
-      <!-- 上車地點經度 -->
-      <el-col :span="12">
-        <el-form-item size="medium" :label="'上車地點經度'" prop="fromLng">
-          <el-input v-model="carGroupList.fromLng" placeholder="請輸入上車地點經度"></el-input>
-        </el-form-item>
-      </el-col>
-      <!-- 上車地點緯度 -->
-      <el-col :span="12">
-        <el-form-item size="medium" :label="'上車地點緯度'" prop="fromLat">
-          <el-input v-model="carGroupList.fromLat" placeholder="請輸入上車地點緯度"></el-input>
-        </el-form-item>
-      </el-col>
-
-      <!-- 下車地點 -->
-      <el-col :span="24">
-        <el-form-item size="medium" :label="'下車地點'" prop="toAddr">
-          <el-input v-model="carGroupList.toAddr" placeholder="請輸入下車地點" @change="getToGeo"></el-input>
-        </el-form-item>
-      </el-col>
-      <!-- 下車地點經度 -->
-      <el-col :span="12">
-        <el-form-item size="medium" :label="'下車地點經度'" prop="toLng">
-          <el-input v-model="carGroupList.toLng" placeholder="請輸入下車地點經度"></el-input>
-        </el-form-item>
-      </el-col>
-      <!-- 下車地點緯度 -->
-      <el-col :span="12">
-        <el-form-item size="medium" :label="'下車地點緯度'" prop="toLat">
-          <el-input v-model="carGroupList.toLat" placeholder="請輸入下車地點緯度"></el-input>
         </el-form-item>
       </el-col>
     </el-form>
@@ -192,17 +186,14 @@ import moment from "moment";
 export default {
   data() {
     return {
-      disBeforeTime: {
-        disabledDate(date) {
-          return date.getTime() < Date.now() - 24 * 60 * 60 * 1000;
-        },
-      },
       carGroupList: {
         // thiId: 0,
-        name: window.localStorage.getItem("userName"),
+        orderStatus: "",
+        reserveName: "",
         town: "SSTW",
         village: "",
         userType: "",
+        name: window.localStorage.getItem("userName"),
         reserveDate: "",
         fromTime: "",
         fromAddr: "",
@@ -212,7 +203,6 @@ export default {
         toAddr: "",
         toLng: "",
         toLat: "",
-        orderStatus: "",
         hasTransfer: "",
         transferTraffic: "",
         transferOperator: "",
@@ -225,120 +215,67 @@ export default {
         stationType: "共享車隊",
         contactPhone: "",
         carpoolNum: 0,
+        birthday: "",
       },
       rules: {
-        name: [
-          {
-            required: true,
-            message: "乘客姓名不能為空",
-            trigger: "blur",
-          },
+        reserveName: [
+          { required: true, message: "請輸入預約人員", tigger: "blur" },
         ],
-        town: [
-          {
-            required: true,
-            message: "請選擇鄉鎮",
-            trigger: "change",
-          },
+        contactPhone: [
+          { required: true, message: "請輸入預約人員電話", tigger: "blur" },
         ],
-        village: [
-          {
-            required: true,
-            message: "村里不能為空",
-            trigger: "blur",
-          },
-        ],
-        userType: [
-          {
-            required: true,
-            message: "請選擇身分",
-            trigger: "change",
-          },
-        ],
+        town: [{ required: true, message: "請選擇鄉鎮", tigger: "change" }],
+        village: [{ required: true, message: "請輸入村里", tigger: "blur" }],
+        userType: [{ required: true, message: "請輸入身分", tigger: "blur" }],
+        name: [{ required: true, message: "請輸入乘客姓名", tigger: "change" }],
+        birthday: [{ required: true, message: "請選擇生日", tigger: "change" }],
+        carpoolNum: [{ required: true, message: "請選擇共乘人數" }],
         reserveDate: [
-          {
-            required: true,
-            message: "請選擇預約日期",
-            trigger: "change",
-          },
+          { required: true, message: "請選擇預約日期", tigger: "change" },
         ],
         fromTime: [
-          {
-            required: true,
-            message: "請選擇預約日期",
-            trigger: "change",
-          },
-        ],
-        hasTransfer: [
-          {
-            required: true,
-            message: "請選擇是否轉乘",
-            trigger: "change",
-          },
-        ],
-        transferTraffic: [
-          {
-            required: true,
-            message: "請選擇轉乘運具",
-            trigger: "change",
-          },
-        ],
-        transferOperator: [
-          {
-            required: true,
-            message: "請選擇轉乘業者",
-            trigger: "change",
-          },
-        ],
-        transferPurpose: [
-          {
-            required: true,
-            message: "請選擇轉乘目的",
-            trigger: "change",
-          },
+          { required: true, message: "請選擇上車時間", tigger: "change" },
         ],
         fromAddr: [
-          {
-            required: true,
-            message: "上車地點不能為空",
-            trigger: "blur",
-          },
+          { required: true, message: "請輸入上車地點", tigger: "change" },
         ],
-        fromLng: [
-          {
-            required: true,
-            message: "上車地點經度不能為空",
-            trigger: "blur",
-          },
+        fromLng: [{ required: true, message: "請輸入上車地點經度" }],
+        fromLat: [{ required: true, message: "請輸入上車地點緯度" }],
+        toTime: [
+          { required: true, message: "請選擇下車時間", tigger: "change" },
         ],
-        fromLat: [
-          {
-            required: true,
-            message: "上車地點緯度不能為空",
-            trigger: "blur",
-          },
+        toAddr: [{ required: true, message: "請輸入下車地點", tigger: "blur" }],
+        toLng: [{ required: true, message: "請輸入下車地點經度" }],
+        toLat: [{ required: true, message: "請輸入下車地點緯度" }],
+        hasTransfer: [
+          { required: true, message: "請選擇是否轉乘", tigger: "change" },
         ],
-        toAddr: [
-          {
-            required: true,
-            message: "下車地點不能為空",
-            trigger: "blur",
-          },
+        transferTraffic: [
+          { required: true, message: "請選擇轉乘運具1", tigger: "change" },
         ],
-        toLng: [
-          {
-            required: true,
-            message: "下車地點經度不能為空",
-            trigger: "blur",
-          },
+        transferOperator: [
+          { required: true, message: "請選擇轉乘業者1", tigger: "change" },
         ],
-        toLat: [
-          {
-            required: true,
-            message: "下車地點緯度不能為空",
-            trigger: "blur",
-          },
+        transferTraffic2: [
+          { required: true, message: "請選擇轉乘運具2", tigger: "change" },
         ],
+        transferOperator2: [
+          { required: true, message: "請選擇轉乘業者2", tigger: "change" },
+        ],
+        transferPurpose: [
+          { required: true, message: "請選擇轉乘目的", tigger: "change" },
+        ],
+      },
+
+      disBeforeTime: {
+        disabledDate(date) {
+          return date.getTime() < Date.now() - 24 * 60 * 60 * 1000;
+        },
+      },
+      disAfterDate: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
       },
     };
   },

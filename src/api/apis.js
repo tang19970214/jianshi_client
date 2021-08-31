@@ -38,6 +38,10 @@ const api = {
   Orders(params) {
     return req("post", "Orders/Add", params);
   },
+  // 白牌車預約
+  OrdersUpdate(params) {
+    return req("post", "Orders/Update", params);
+  },
   // 白牌調度接口 
   LoadOrder(params) {
     return req("get", "Orders/Load", params);

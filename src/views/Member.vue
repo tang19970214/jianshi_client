@@ -12,16 +12,8 @@
     <div class="d-block d-mb-none pt-90">
       <div class="w-100 pos-fixed t-0 z-999">
         <PhoneHeader :pageName="mainPageName" />
-        <div
-          class="childrenTag w-100 d-flex align-items-center justify-content-center flex-row"
-        >
-          <div
-            class="w-100 py-12 d-flex align-items-center justify-content-center flex-row"
-            :class="{ 'childrenTag-active': item.path === $route.name }"
-            v-for="(item, index) in filterPages(childrenPage)"
-            :key="'CP_' + index"
-            @click="goPage(item)"
-          >
+        <div class="childrenTag w-100 d-flex align-items-center justify-content-center flex-row">
+          <div class="w-100 py-12 d-flex align-items-center justify-content-center flex-row" :class="{ 'childrenTag-active': item.path === $route.name }" v-for="(item, index) in filterPages(childrenPage)" :key="'CP_' + index" @click="goPage(item)">
             <div class="w-100 text-center">
               <p class="m-0">{{ item.pageName }}</p>
             </div>

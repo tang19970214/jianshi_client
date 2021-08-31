@@ -142,7 +142,7 @@
                   <!-- 轉乘運具1 -->
                   <el-col :span="8" v-if="carGroupList.hasTransfer == '是'">
                     <el-form-item size="medium" :label="'轉乘運具1'" prop="transferTraffic">
-                      <el-select v-model="carGroupList.transferTraffic" placeholder="請選擇轉乘運具">
+                      <el-select v-model="carGroupList.transferTraffic" placeholder="請選擇轉乘運具" @change="carGroupList.transferOperator = ''">
                         <el-option label="幸福巴士" value="幸福巴士"></el-option>
                         <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
                       </el-select>
@@ -150,7 +150,7 @@
                   </el-col>
                   <!-- 轉乘業者1 -->
                   <el-col :span="8" v-if="carGroupList.hasTransfer == '是'">
-                    <el-form-item size="medium" :label="'轉乘業者1'" prop="transferOperator">
+                    <el-form-item size="medium" :label="'轉乘業者1'" prop="transferOperator" :rules="carGroupList.transferTraffic == '幸福巴士' ? rules_share.transferOperator : [{required: false}]">
                       <el-select v-model="carGroupList.transferOperator" placeholder="請選擇轉乘業者">
                         <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
                         <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
@@ -159,8 +159,8 @@
                   </el-col>
                   <!-- 轉乘運具2 -->
                   <el-col :span="8" v-if="carGroupList.hasTransfer == '是'">
-                    <el-form-item size="medium" :label="'轉乘運具2'">
-                      <el-select v-model="carGroupList.transferTraffic2" placeholder="請選擇轉乘運具">
+                    <el-form-item size="medium" :label="'轉乘運具2'" prop="transferTraffic2">
+                      <el-select v-model="carGroupList.transferTraffic2" placeholder="請選擇轉乘運具" @change="carGroupList.transferOperator2 = ''">
                         <el-option label="幸福巴士" value="幸福巴士"></el-option>
                         <el-option label="噗噗共乘" value="噗噗共乘"></el-option>
                       </el-select>
@@ -168,7 +168,7 @@
                   </el-col>
                   <!-- 轉乘業者2 -->
                   <el-col :span="8" v-if="carGroupList.hasTransfer == '是'">
-                    <el-form-item size="medium" :label="'轉乘業者2'" prop="transferOperator2" :rules="!!carGroupList.transferTraffic2 ? rules_share.transferOperator2 : [{required: false}]">
+                    <el-form-item size="medium" :label="'轉乘業者2'" prop="transferOperator2" :rules="carGroupList.transferTraffic2 == '幸福巴士' ? rules_share.transferOperator2 : [{required: false}]">
                       <el-select v-model="carGroupList.transferOperator2" placeholder="請選擇轉乘業者">
                         <el-option label="尖石鄉DRTS" value="尖石鄉DRTS"></el-option>
                         <el-option label="尖石鄉基本民行" value="尖石鄉基本民行"></el-option>
@@ -415,7 +415,7 @@ export default {
       carGroupList: {
         // thiId: 0,
         orderStatus: "",
-        reserveName: "",
+        reserveName: window.localStorage.getItem("userName"),
         town: "SSTW",
         village: "",
         userType: "",
